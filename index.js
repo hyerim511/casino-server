@@ -26,7 +26,7 @@ app.use(bodyParser.json());
 // Custom Header
 app.options('/login', (req,res) => {
     res.header('Access-Control-Allow-Origin', 'http://localhost:8081');
-    res.header('Access-Control-Allow-Headers', 'task');
+    res.header('Access-Control-Allow-Headers', 'casino');
     res.header('Access-Control-Allow-Methods', 'GET, POST');
     res.sendStatus(200);
 });
