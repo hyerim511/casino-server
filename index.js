@@ -14,6 +14,7 @@ const textBodyParser = bodyParser.text({
 
 // Modules
 const { authenticateUser } = require('./my_modules/login.js');
+const { createDeck, createPlayers } = require('./my_modules/module-hyerim.js');
 
 // CORS
 app.use(cors({
@@ -28,7 +29,7 @@ app.use(bodyParser.json());
 app.options('/login', (req,res) => {
     res.header('Access-Control-Allow-Origin', 'http://localhost:8081');
     res.header('Access-Control-Allow-Headers', 'casino');
-    res.header('Access-Control-Allow-Methods', 'GET, POST');
+    res.header('Access-Control-Allow-Methods', 'GET');
     res.sendStatus(200);
 });
 
@@ -39,7 +40,7 @@ app.get('/login',textBodyParser, async function(req, res){
     console.log('req.headers: ', req.headers);
 
     const reqOrigin = req.headers['origin'];
-    const reqTask = req.headers['task'];
+    const reqTask = req.headers['casino'];
 
     console.log("Request from" + reqOrigin + "for route" + req.url + "with method " + req.method + "for task" + reqTask);
 
@@ -64,12 +65,40 @@ app.get('/login',textBodyParser, async function(req, res){
     res.end();
 });
 
+// GET for Blackjack
+app.get('/blackjack', async function(req, res) {
+    console.log('req.headers: ', req.headers);
+
+    const reqOrigin = req.headers['origin'];
+    const reqTask = req.headers['casino'];
+    console.log("Request from: " + reqOrigin + " for route: " + req.url + " with method: " + req.method + " for task: " + reqTask);
+
+    if (reqTask === 'blackjack') {
+        try {
+            const deck = createDeck();
+            const players = createPlayers(2);
+            console.log(deck);
+            
+            res.setHeader('Access-Control-Allow-Origin', '*');
+            res.setHeader('Access-Control-Expose-Headers', 'request-result');
+            res.setHeader('request-result', 'Request ' + req.method + ' was received successfully');
+            res.status(200).json({ players, deck });
+            
+        } catch(error) {
+            console.log("authenticateUser error: ", error);
+            res.status(500).send("Server Error");
+        }
+    }
+
+});
+
+
 // POST for Signup
 app.post('/login', async function(req, res) {
     console.log('req.headers: ', req.headers);
 
     const reqOrigin = req.headers['origin'];
-    const reqTask = req.headers['task'];
+    const reqTask = req.headers['casino'];
     const reqBody = req.body;
 
     console.log("Request from" + reqOrigin + "for route" + req.url + "with method " + req.method + "for task" + reqTask);
