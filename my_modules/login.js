@@ -1,6 +1,7 @@
 const fs = require('fs');
 const userData = './data/users.json';
 
+// validate login
 async function authenticateUser(req) {
     const { username, password } = req.query;
     return new Promise((resolve, reject)=>{
@@ -19,6 +20,64 @@ async function authenticateUser(req) {
     });
 }
 
+// add new user from POST data
+async function addUser(filePath, username, password, coins, tickets) {
+    return new Promise((resolve, reject) => {
+        const fileData = fs.readFileSync(filePath);
+        let users;
+
+        try {
+            users = JSON.parse(fileData);
+        } catch(error) {
+            reject(error);
+            users = {};
+        }
+
+        if(!users[username]) {
+            users[username] = {
+                password: password,
+                coins: coins,
+                tickets: tickets
+            };
+            fs.writeFileSync(filePath, JSON.stringify(users, null, 2));
+            console.log(`USER ${username} was added`);
+        } else {
+            console.log("username already existes");
+        }
+
+        resolve();
+    });
+}
+
+// change username from PATCH data
+async function changeName(filePath, username, newName) {
+    return new Promise((resolve, reject) => {
+        const fileData = fs.readFileSync(filePath);
+        let users;
+
+        try {
+            users = JSON.parse(fileData);
+        } catch(error) {
+            reject(error);
+            users = {};
+        }
+
+        if(users[username]) {
+            Object.defineProperty(users, newName,
+                Object.getOwnPropertyDescriptor(users, username));
+            delete users[username];
+            fs.writeFileSync(filePath, JSON.stringify(users, null, 2));
+            console.log(`USER ${newName} was changed`);
+        } else {
+            console.log("username already existes");
+        }
+
+        resolve();
+    });
+}
+
 module.exports = {
-    authenticateUser
+    authenticateUser,
+    addUser,
+    changeName
 };

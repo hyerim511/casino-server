@@ -13,8 +13,8 @@ const textBodyParser = bodyParser.text({
 });
 
 // Modules
-const { authenticateUser } = require('./my_modules/login.js');
-const { createDeck, createPlayers } = require('./my_modules/module-hyerim.js');
+const { authenticateUser, addUser, changeName } = require('./my_modules/login.js');
+const { createDeck, createPlayers, readCsvFile } = require('./my_modules/module-hyerim.js');
 const { calculateReward,handleBetClick } = require('./my_modules/module-mao.js')
 
 // CORS
@@ -30,7 +30,7 @@ app.use(bodyParser.json());
 app.options('/login', (req,res) => {
     res.header('Access-Control-Allow-Origin', 'http://localhost:8081');
     res.header('Access-Control-Allow-Headers', 'casino');
-    res.header('Access-Control-Allow-Methods', 'GET');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PATCH');
     res.sendStatus(200);
 });
 
@@ -78,19 +78,22 @@ app.get('/blackjack', async function(req, res) {
         try {
             const deck = createDeck();
             const players = createPlayers(2);
-            console.log(deck);
-            
+            const color = await readCsvFile('./data/data-hyerim.csv');
+            const colorArr = [];
+            for(let i = 1; i < 5; i++) {
+                colorArr.push(color[i][1]);
+            }
+            var randomColor = colorArr[Math.floor(Math.random()*colorArr.length)];
             res.setHeader('Access-Control-Allow-Origin', '*');
             res.setHeader('Access-Control-Expose-Headers', 'request-result');
             res.setHeader('request-result', 'Request ' + req.method + ' was received successfully');
-            res.status(200).json({ players, deck });
+            res.status(200).json({ players, deck, randomColor });
             
         } catch(error) {
             console.log("authenticateUser error: ", error);
             res.status(500).send("Server Error");
         }
     }
-
 });
 
 
@@ -110,7 +113,33 @@ app.post('/login', async function(req, res) {
             const filePath = './data/users.json';
             const username = reqBody.username;
             const password = reqBody.password;
-            await addUser(filePath, username, password);
+            const coins = reqBody.coins;
+            const tickets = reqBody.tickets;
+            await addUser(filePath, username, password, coins, tickets);
+        } catch(error) {
+            console.log("error: ", error);
+            res.status(500).send("Server Error");
+        }
+    }
+});
+
+// PATCH for Change Name
+app.patch('/login', async function(req, res) {
+    console.log('req.headers: ', req.headers);
+
+    const reqOrigin = req.headers['origin'];
+    const reqTask = req.headers['casino'];
+    const reqBody = req.body;
+
+    console.log("Request from" + reqOrigin + "for route" + req.url + "with method " + req.method + "for task" + reqTask);
+    console.log(reqBody);
+
+    if (reqTask === 'change') {
+        try {
+            const filePath = './data/users.json';
+            const username = reqBody.username;
+            const newName = reqBody.newName;
+            await changeName(filePath, username, newName);
         } catch(error) {
             console.log("error: ", error);
             res.status(500).send("Server Error");

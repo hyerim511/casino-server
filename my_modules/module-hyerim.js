@@ -1,6 +1,7 @@
 const { parse } = require("csv-parse");
 const fs = require('fs');
 
+// Read CSV file
 async function readCsvFile(file) {
     return new Promise((resolve, reject) => {
         const results = [];
@@ -19,51 +20,15 @@ async function readCsvFile(file) {
             .on('error', function(error) {
                 reject(error);
             });
-    });
+        });
 }
 
-
-// let suits = [];
-// let csvFileData;
-// async function dataSuits() {
-//     try {
-//         csvFileData = await readCsvFile('./data/data-hyerim.csv');
-//         // for(let i=1; i < csvFileData.length; i++) {
-//         //     newSuits.push(csvFileData[i][1]);
-//         // }
-//         return csvFileData;
-//         // console.log(suits);
-//     } catch (error) {
-//         console.log(error);
-//     }
-    
-//     // const csvFileData = await readCsvFile('./data/data-hyerim.csv');
-//     // console.log(csvFileData);
-//     return csvFileData;
-// }
-
-// let suitsresult = dataSuits()
-//     .then(res => {
-//         for(let i=1; i < res.length; i++) {
-//             suits.push(res[i][1]);
-//         }
-//         return suits;
-//     });
-    
-// let dataSuits = [];
-// const suitData = dataSuits();
-// for(let i=1; i < suitData.length; i++) {
-//     suits.push(suitData[i][1]);
-// }
-// console.log(suitData);
-
-
-
-let suits = ["Spades", "Hearts", "Diamonds", "Clubs"];
+const suits = ["Spades", "Hearts", "Diamonds", "Clubs"];
 const values = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"];
 let deck = new Array();
 let players = new Array();
 
+// Create deck
 function createDeck() {
     deck = new Array();
     for (let i = 0 ; i < values.length; i++)
@@ -83,6 +48,7 @@ function createDeck() {
     return deck;
 }
 
+// Create players
 function createPlayers(num) {
     players = new Array();
     for(let i = 1; i <= num; i++)
@@ -94,9 +60,9 @@ function createPlayers(num) {
     return players;
 }
 
+// Make random deck
+// switch the values of two random cards
 function shuffle() {
-    // for 1000 turns
-    // switch the values of two random cards
     for (let i = 0; i < 1000; i++) {
         let location1 = Math.floor((Math.random() * deck.length));
         let location2 = Math.floor((Math.random() * deck.length));
@@ -109,5 +75,6 @@ function shuffle() {
 
 module.exports = {
     createDeck,
-    createPlayers
+    createPlayers,
+    readCsvFile
 };
