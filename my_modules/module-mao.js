@@ -1,28 +1,48 @@
-const fs = require('fs');  // import fs library
-const userData = './data/users.json'; // path to the users.json
-
-async function authenticateUser(req) {
-    // get the value for the 'username' and 'password'
-    // keys from the request query string
-    const { username, password } = req.query;
-
-    return new Promise((resolve, reject) => {
-        fs.readFile(userData, 'utf-8', (err, fileData) => {
-            if (err) {
-                reject(err);
-                return;
-            }
-
-            const users = JSON.parse(fileData);
-            if (users[username] && users[username].password === password) {
-                resolve(true);
-            } else {
-                resolve(false);
-            }
-        });
-    });
+function calculateReward(panels, betAmount) {
+    if (panels[0].isMatched(panels[1], panels[2])) {
+        // 3つのカードが一致した場合の報酬
+        return betAmount * 3;
+    } else if (
+        panels[0].isMatched(panels[1], panels[2]) ||
+        panels[1].isMatched(panels[0], panels[2]) ||
+        panels[2].isMatched(panels[0], panels[1])
+    ) {
+        // 2つのカードが一致した場合の報酬
+        return betAmount * 2;
+    } else {
+        // カードが一致しない場合の報酬
+        return 0;
+    }
 }
 
 module.exports = {
-    authenticateUser
+    calculateReward
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
