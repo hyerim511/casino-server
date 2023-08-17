@@ -1,18 +1,17 @@
 {
-    "user1": {
-      "password": "1234",
-      "coins": 100000,
-      "tickets": 3
-    },
-    "user2": {
-      "password": "1234",
-      "coins": 500000,
-      "tickets": 5
-    },
-    "user3": {
-      "password": "1234",
-      "coins": 80000,
-      "tickets": 5
-    }
+  "user2": {
+    "password": "1234",
+    "coins": 500000,
+    "tickets": 5
+  },
+  "user3": {
+    "password": "1234",
+    "coins": 80000,
+    "tickets": 5
+  },
+  "changename11": {
+    "password": "1234",
+    "coins": 100000,
+    "tickets": 3
   }
-
+}

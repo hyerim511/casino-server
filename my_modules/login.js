@@ -19,7 +19,7 @@ async function authenticateUser(req) {
     });
 }
 
-async function addUser(filePath, username, password) {
+async function addUser(filePath, username, password, coins, tickets) {
     return new Promise((resolve, reject) => {
         const fileData = fs.readFileSync(filePath);
         let users;
@@ -34,8 +34,8 @@ async function addUser(filePath, username, password) {
         if(!users[username]) {
             users[username] = {
                 password: password,
-                balance: 10,
-                tickets: 3
+                coins: coins,
+                tickets: tickets
             };
             fs.writeFileSync(filePath, JSON.stringify(users, null, 2));
             console.log(`USER ${username} was added`);
@@ -47,7 +47,35 @@ async function addUser(filePath, username, password) {
     });
 }
 
+
+async function changeName(filePath, username, newName) {
+    return new Promise((resolve, reject) => {
+        const fileData = fs.readFileSync(filePath);
+        let users;
+
+        try {
+            users = JSON.parse(fileData);
+        } catch(error) {
+            reject(error);
+            users = {};
+        }
+
+        if(users[username]) {
+            Object.defineProperty(users, newName,
+                Object.getOwnPropertyDescriptor(users, username));
+            delete users[username];
+            fs.writeFileSync(filePath, JSON.stringify(users, null, 2));
+            console.log(`USER ${newName} was changed`);
+        } else {
+            console.log("username already existes");
+        }
+
+        resolve();
+    });
+}
+
 module.exports = {
     authenticateUser,
-    addUser
+    addUser,
+    changeName
 };

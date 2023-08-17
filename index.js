@@ -13,7 +13,7 @@ const textBodyParser = bodyParser.text({
 });
 
 // Modules
-const { authenticateUser, addUser } = require('./my_modules/login.js');
+const { authenticateUser, addUser, changeName } = require('./my_modules/login.js');
 const { createDeck, createPlayers, readCsvFile } = require('./my_modules/module-hyerim.js');
 
 // CORS
@@ -112,7 +112,33 @@ app.post('/login', async function(req, res) {
             const filePath = './data/users.json';
             const username = reqBody.username;
             const password = reqBody.password;
-            await addUser(filePath, username, password);
+            const coins = reqBody.coins;
+            const tickets = reqBody.tickets;
+            await addUser(filePath, username, password, coins, tickets);
+        } catch(error) {
+            console.log("error: ", error);
+            res.status(500).send("Server Error");
+        }
+    }
+});
+
+// PATCH for Change Name
+app.patch('/login', async function(req, res) {
+    console.log('req.headers: ', req.headers);
+
+    const reqOrigin = req.headers['origin'];
+    const reqTask = req.headers['casino'];
+    const reqBody = req.body;
+
+    console.log("Request from" + reqOrigin + "for route" + req.url + "with method " + req.method + "for task" + reqTask);
+    console.log(reqBody);
+
+    if (reqTask === 'change') {
+        try {
+            const filePath = './data/users.json';
+            const username = reqBody.username;
+            const newName = reqBody.newName;
+            await changeName(filePath, username, newName);
         } catch(error) {
             console.log("error: ", error);
             res.status(500).send("Server Error");
