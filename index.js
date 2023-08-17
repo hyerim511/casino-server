@@ -15,6 +15,7 @@ const textBodyParser = bodyParser.text({
 // Modules
 const { authenticateUser } = require('./my_modules/login.js');
 const { createDeck, createPlayers } = require('./my_modules/module-hyerim.js');
+const { calculateReward } = require('./my_modules/module-mao.js')
 
 // CORS
 app.use(cors({
@@ -126,3 +127,32 @@ app.listen(port, (err)=>{
     }
     console.log(`Server listening on http://localhost:${port}`);
 });
+
+//get for slotmachine
+app.get('/slotmachine', async function (req, res) {
+    // print the HTTP Request Headers
+    console.log('req.headers: ', req.headers); 
+
+    const reqOrigin = req.headers['origin']; // get the origin of the request
+    const reqTask = req.headers['task']; // get the task of the request
+
+    console.log("Processing request from " + reqOrigin + " for route " + req.url + " with method " + req.method + " for task: " + reqTask);
+    
+    if (reqTask === 'bet-coin') {
+        try {
+            const rewards = calculateReward
+            console.log(rewards);
+
+            res.setHeader('Access-Control-Allow-Origin', '*');
+            res.setHeader('Access-Control-Expose-Headers', 'request-result');
+            res.setHeader('request-result', 'Request ' + req.method + ' was received successfully');
+            res.status(200);
+            
+        } catch(error) {
+            console.log("authenticateUser error: ", error);
+            res.status(500).send("Server Error");
+        }
+    }
+
+});
+
