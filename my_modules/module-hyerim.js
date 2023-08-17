@@ -19,43 +19,59 @@ async function readCsvFile(file) {
             .on('error', function(error) {
                 reject(error);
             });
-    });
+
+
+            // setTimeout(() => {
+            //     resolve();
+                
+            // }, 5000);
+        });
 }
 
 
 // let suits = [];
-// let csvFileData;
-// async function dataSuits() {
-//     try {
-//         csvFileData = await readCsvFile('./data/data-hyerim.csv');
-//         // for(let i=1; i < csvFileData.length; i++) {
-//         //     newSuits.push(csvFileData[i][1]);
-//         // }
-//         return csvFileData;
+// var myData = '';
+// // let csvFileData;
+// const dataSuits = async () => {
+//     let data = await readCsvFile('./data/data-hyerim.csv');
+//     myData = data;
+
+//     const newArr = myData.map((item) => {
+//         suits.push(item[1], "newitem");
 //         // console.log(suits);
-//     } catch (error) {
-//         console.log(error);
-//     }
+//     });
+//     // console.log(suits);
+
+//     return suits;
     
-//     // const csvFileData = await readCsvFile('./data/data-hyerim.csv');
-//     // console.log(csvFileData);
-//     return csvFileData;
+//     // try {
+//     //     const csvFileData = await readCsvFile('./data/data-hyerim.csv');
+//     //     // console.log(csvFileData, "csv data");
+//     //     for(let i=1; i < csvFileData.length; i++) {
+//     //         suits.push(csvFileData[i][1]);
+//     //     }
+//     //     console.log(suits);
+//     //     return csvFileData;
+//     // } catch (error) {
+//     //     console.log(error);
+//     // }
 // }
 
-// let suitsresult = dataSuits()
-//     .then(res => {
-//         for(let i=1; i < res.length; i++) {
-//             suits.push(res[i][1]);
-//         }
-//         return suits;
-//     });
+// // let suitsresult = dataSuits()
+// //     .then(res => {
+// //         for(let i=1; i < res.length; i++) {
+// //             suits.push(res[i][1]);
+// //         }
+// //         return suits;
+// //     });
     
-// let dataSuits = [];
-// const suitData = dataSuits();
-// for(let i=1; i < suitData.length; i++) {
-//     suits.push(suitData[i][1]);
-// }
-// console.log(suitData);
+// // const suitData = dataSuits().then(result => console.log(result, "result"));
+// // for(let i=1; i < suitData.length; i++) {
+// //     suits.push(suitData[i][1]);
+// // }
+// // console.log(suitData, "final data");
+// dataSuits();
+// console.log(suits, "my data");
 
 
 

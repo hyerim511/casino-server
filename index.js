@@ -13,7 +13,7 @@ const textBodyParser = bodyParser.text({
 });
 
 // Modules
-const { authenticateUser } = require('./my_modules/login.js');
+const { authenticateUser, addUser } = require('./my_modules/login.js');
 const { createDeck, createPlayers } = require('./my_modules/module-hyerim.js');
 
 // CORS
@@ -29,7 +29,7 @@ app.use(bodyParser.json());
 app.options('/login', (req,res) => {
     res.header('Access-Control-Allow-Origin', 'http://localhost:8081');
     res.header('Access-Control-Allow-Headers', 'casino');
-    res.header('Access-Control-Allow-Methods', 'GET');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PATCH');
     res.sendStatus(200);
 });
 
