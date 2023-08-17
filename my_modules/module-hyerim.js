@@ -1,6 +1,7 @@
 const { parse } = require("csv-parse");
 const fs = require('fs');
 
+// Read CSV file
 async function readCsvFile(file) {
     return new Promise((resolve, reject) => {
         const results = [];
@@ -22,11 +23,12 @@ async function readCsvFile(file) {
         });
 }
 
-let suits = ["Spades", "Hearts", "Diamonds", "Clubs"];
+const suits = ["Spades", "Hearts", "Diamonds", "Clubs"];
 const values = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"];
 let deck = new Array();
 let players = new Array();
 
+// Create deck
 function createDeck() {
     deck = new Array();
     for (let i = 0 ; i < values.length; i++)
@@ -46,6 +48,7 @@ function createDeck() {
     return deck;
 }
 
+// Create players
 function createPlayers(num) {
     players = new Array();
     for(let i = 1; i <= num; i++)
@@ -57,9 +60,9 @@ function createPlayers(num) {
     return players;
 }
 
+// Make random deck
+// switch the values of two random cards
 function shuffle() {
-    // for 1000 turns
-    // switch the values of two random cards
     for (let i = 0; i < 1000; i++) {
         let location1 = Math.floor((Math.random() * deck.length));
         let location2 = Math.floor((Math.random() * deck.length));

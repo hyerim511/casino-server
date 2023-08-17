@@ -1,6 +1,7 @@
 const fs = require('fs');
 const userData = './data/users.json';
 
+// validate login
 async function authenticateUser(req) {
     const { username, password } = req.query;
     return new Promise((resolve, reject)=>{
@@ -19,6 +20,7 @@ async function authenticateUser(req) {
     });
 }
 
+// add new user from POST data
 async function addUser(filePath, username, password, coins, tickets) {
     return new Promise((resolve, reject) => {
         const fileData = fs.readFileSync(filePath);
@@ -47,7 +49,7 @@ async function addUser(filePath, username, password, coins, tickets) {
     });
 }
 
-
+// change username from PATCH data
 async function changeName(filePath, username, newName) {
     return new Promise((resolve, reject) => {
         const fileData = fs.readFileSync(filePath);
