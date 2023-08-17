@@ -1,23 +1,40 @@
-function calculateReward(panels, betAmount) {
+function calculateReward(panels) {
     if (panels[0].isMatched(panels[1], panels[2])) {
-        // 3つのカードが一致した場合の報酬
-        return betAmount * 3;
+        return 3;
     } else if (
         panels[0].isMatched(panels[1], panels[2]) ||
         panels[1].isMatched(panels[0], panels[2]) ||
         panels[2].isMatched(panels[0], panels[1])
     ) {
-        // 2つのカードが一致した場合の報酬
-        return betAmount * 2;
-    } else {
-        // カードが一致しない場合の報酬
-        return 0;
+        return 2;
     }
+    return 0;
 }
 
+function handleBetClick() {
+    const betAmount = parseInt(betInput.value);
+    if (isNaN(betAmount) || betAmount <= 0 || betAmount > coins) {
+        return;
+    }
+
+    coins -= betAmount;
+    coinsDisplay.textContent = `Coins: ${coins}`;
+
+    const reward = calculateReward(panels);
+    coins += reward * betAmount;
+    coinsDisplay.textContent = `Coins: ${coins}`;
+
+    resultDisplay.textContent = reward > 0 ? `You won ${reward * betAmount} coins!` : "Try again!";
+}
+
+
+
 module.exports = {
-    calculateReward
+    calculateReward,
+    handleBetClick
 };
+
+
 
 
 

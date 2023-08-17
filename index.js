@@ -15,7 +15,7 @@ const textBodyParser = bodyParser.text({
 // Modules
 const { authenticateUser } = require('./my_modules/login.js');
 const { createDeck, createPlayers } = require('./my_modules/module-hyerim.js');
-const { calculateReward } = require('./my_modules/module-mao.js')
+const { calculateReward,handleBetClick } = require('./my_modules/module-mao.js')
 
 // CORS
 app.use(cors({
@@ -129,6 +129,7 @@ app.listen(port, (err)=>{
 });
 
 //get for slotmachine
+//get for slotmachine
 app.get('/slotmachine', async function (req, res) {
     // print the HTTP Request Headers
     console.log('req.headers: ', req.headers); 
@@ -140,8 +141,11 @@ app.get('/slotmachine', async function (req, res) {
     
     if (reqTask === 'bet-coin') {
         try {
-            const rewards = calculateReward
-            console.log(rewards);
+            const betClick = handleBetClick;
+            const reward = calculateReward;
+            console.log("handleBetClick returned betClick: ", betClick);
+            console.log("calculateRward returned betClick: ", reward);
+
 
             res.setHeader('Access-Control-Allow-Origin', '*');
             res.setHeader('Access-Control-Expose-Headers', 'request-result');
