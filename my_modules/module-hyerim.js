@@ -19,61 +19,8 @@ async function readCsvFile(file) {
             .on('error', function(error) {
                 reject(error);
             });
-
-
-            // setTimeout(() => {
-            //     resolve();
-                
-            // }, 5000);
         });
 }
-
-
-// let suits = [];
-// var myData = '';
-// // let csvFileData;
-// const dataSuits = async () => {
-//     let data = await readCsvFile('./data/data-hyerim.csv');
-//     myData = data;
-
-//     const newArr = myData.map((item) => {
-//         suits.push(item[1], "newitem");
-//         // console.log(suits);
-//     });
-//     // console.log(suits);
-
-//     return suits;
-    
-//     // try {
-//     //     const csvFileData = await readCsvFile('./data/data-hyerim.csv');
-//     //     // console.log(csvFileData, "csv data");
-//     //     for(let i=1; i < csvFileData.length; i++) {
-//     //         suits.push(csvFileData[i][1]);
-//     //     }
-//     //     console.log(suits);
-//     //     return csvFileData;
-//     // } catch (error) {
-//     //     console.log(error);
-//     // }
-// }
-
-// // let suitsresult = dataSuits()
-// //     .then(res => {
-// //         for(let i=1; i < res.length; i++) {
-// //             suits.push(res[i][1]);
-// //         }
-// //         return suits;
-// //     });
-    
-// // const suitData = dataSuits().then(result => console.log(result, "result"));
-// // for(let i=1; i < suitData.length; i++) {
-// //     suits.push(suitData[i][1]);
-// // }
-// // console.log(suitData, "final data");
-// dataSuits();
-// console.log(suits, "my data");
-
-
 
 let suits = ["Spades", "Hearts", "Diamonds", "Clubs"];
 const values = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"];
@@ -125,5 +72,6 @@ function shuffle() {
 
 module.exports = {
     createDeck,
-    createPlayers
+    createPlayers,
+    readCsvFile
 };

@@ -14,7 +14,7 @@ const textBodyParser = bodyParser.text({
 
 // Modules
 const { authenticateUser, addUser } = require('./my_modules/login.js');
-const { createDeck, createPlayers } = require('./my_modules/module-hyerim.js');
+const { createDeck, createPlayers, readCsvFile } = require('./my_modules/module-hyerim.js');
 
 // CORS
 app.use(cors({
@@ -77,19 +77,22 @@ app.get('/blackjack', async function(req, res) {
         try {
             const deck = createDeck();
             const players = createPlayers(2);
-            console.log(deck);
-            
+            const color = await readCsvFile('./data/data-hyerim.csv');
+            const colorArr = [];
+            for(let i = 1; i < 5; i++) {
+                colorArr.push(color[i][1]);
+            }
+            var randomColor = colorArr[Math.floor(Math.random()*colorArr.length)];
             res.setHeader('Access-Control-Allow-Origin', '*');
             res.setHeader('Access-Control-Expose-Headers', 'request-result');
             res.setHeader('request-result', 'Request ' + req.method + ' was received successfully');
-            res.status(200).json({ players, deck });
+            res.status(200).json({ players, deck, randomColor });
             
         } catch(error) {
             console.log("authenticateUser error: ", error);
             res.status(500).send("Server Error");
         }
     }
-
 });
 
 
