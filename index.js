@@ -19,7 +19,7 @@ const { calculateReward,handleBetClick } = require('./my_modules/module-mao.js')
 
 // CORS
 app.use(cors({
-    origin: 'http://localhost:8081'
+    origin: 'http://localhost:5173'
 }));
 
 // Body Parser
@@ -28,7 +28,7 @@ app.use(bodyParser.json());
 
 // Custom Header
 app.options('/login', (req,res) => {
-    res.header('Access-Control-Allow-Origin', 'http://localhost:8081');
+    res.header('Access-Control-Allow-Origin', 'http://localhost:5173');
     res.header('Access-Control-Allow-Headers', 'casino');
     res.header('Access-Control-Allow-Methods', 'GET, POST, PATCH');
     res.sendStatus(200);
@@ -161,7 +161,7 @@ app.listen(port, (err)=>{
 //get for slotmachine
 app.get('/slotmachine', async function (req, res) {
     // print the HTTP Request Headers
-    console.log('req.headers: ', req.headers); 
+    console.log('req.headers: ', req.headers); q
 
     const reqOrigin = req.headers['origin']; // get the origin of the request
     const reqTask = req.headers['task']; // get the task of the request
@@ -189,3 +189,35 @@ app.get('/slotmachine', async function (req, res) {
 
 });
 
+//maya
+// POST for Form Submit
+app.post('/submit', async function(req, res) {
+    const formData = req.body; // リクエストボディからデータを取得
+  
+    try {
+      // JSONファイルから既存のデータを読み込む
+      const existingData = JSON.parse(fs.readFileSync('./data/customerData.json', 'utf8'));
+  
+      // 新しいデータを追加
+      existingData.push(formData);
+  
+      // 更新したデータをJSONファイルに書き込む
+      fs.writeFileSync('./data/customerData.json', JSON.stringify(existingData, null, 2));
+  
+      // レスポンスを送信
+      res.setHeader('Access-Control-Allow-Origin', '*');
+      res.setHeader('Access-Control-Expose-Headers', 'request-result');
+      res.setHeader('request-result', 'Request ' + req.method + ' was received successfully');
+      res.status(200).send("Data received and saved successfully");
+    } catch (error) {
+      console.log("Error processing data:", error);
+      res.status(500).send("Server Error");
+    }
+  });
+  //これにより、クライアント側のContactForm.jsxからフォームデータがPOSTリクエストとしてサーバーに送信され、/submitエンドポイントで受け取られ、JSONファイルに保存されるようになります。
+  
+  
+  
+  
+  
+  
